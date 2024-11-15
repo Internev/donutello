@@ -1,22 +1,12 @@
-'use client'
-
-import { GetAnimeListQuery, useGetAnimeListQuery, Media } from "@/graphql/generated/graphql"
-import { Button, Card, Image, Text } from "@chakra-ui/react"
-import { useSearchParams, usePathname } from 'next/navigation'
+import AnimeDetails from "@/app/anime/AnimeDetails"
 import DetailsModal from "./DetailsModal"
 
-type AnimeMedia = NonNullable<NonNullable<GetAnimeListQuery['Page']>['media']>[number]
-
-const AnimeDetails: React.FC<{ id: string }> = ({ id }) => {
-  const searchParams = useSearchParams()
-  const pathName = usePathname()
-  console.log('searchParams', searchParams)
-  console.log('pathName', pathName)
+const AnimeDetailsPage = () => {
   return (
-    <DetailsModal active>
-      <div>hi modal</div>
+    <DetailsModal>
+      <AnimeDetails />
     </DetailsModal>
   )
 }
 
-export default AnimeDetails
+export default AnimeDetailsPage
