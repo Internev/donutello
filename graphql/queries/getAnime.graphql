@@ -1,0 +1,28 @@
+query GetAnimeList($offset: Int!) {
+  Page(page: $offset, perPage: 30) {
+    media {
+      id
+      title {
+        userPreferred
+      }
+      description
+      trailer {
+        id
+        site
+        
+      }
+      type
+      startDate {
+        year
+        month
+        day
+      }
+      coverImage {
+        extraLarge
+        large
+        medium
+        color
+      }
+    }
+  }
+}
