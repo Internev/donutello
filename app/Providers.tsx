@@ -6,7 +6,7 @@ import {
   ApolloClient,
   InMemoryCache,
 } from "@apollo/experimental-nextjs-app-support"
-import { Provider as ChakraProvider } from "@/components/ui/provider"
+import { ChakraProvider, extendTheme, ThemeConfig, withDefaultColorScheme } from '@chakra-ui/react'
 
 function makeClient() {
   const httpLink = new HttpLink({
@@ -19,10 +19,12 @@ function makeClient() {
   })
 }
 
+const customTheme = extendTheme(withDefaultColorScheme({ colorScheme: 'pink' }))
+
 export function Providers({ children }: React.PropsWithChildren) {
   return (
     <ApolloNextAppProvider makeClient={makeClient} >
-      <ChakraProvider>
+      <ChakraProvider theme={customTheme}>
         {children}
       </ChakraProvider>
     </ApolloNextAppProvider>
