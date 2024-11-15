@@ -4673,38 +4673,67 @@ export type YearStats = {
   year?: Maybe<Scalars['Int']['output']>;
 };
 
+export type AnimeDetailsFragment = { __typename?: 'Media', id: number, description?: string | null, type?: MediaType | null, bannerImage?: string | null, title?: { __typename?: 'MediaTitle', userPreferred?: string | null } | null, tags?: Array<{ __typename?: 'MediaTag', id: number, name: string, category?: string | null, rank?: number | null } | null> | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null, endDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null };
+
 export type GetAnimeListQueryVariables = Exact<{
   offset: Scalars['Int']['input'];
 }>;
 
 
-export type GetAnimeListQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', id: number, type?: MediaType | null, title?: { __typename?: 'MediaTitle', userPreferred?: string | null } | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null, coverImage?: { __typename?: 'MediaCoverImage', extraLarge?: string | null, large?: string | null, medium?: string | null, color?: string | null } | null } | null> | null } | null };
+export type GetAnimeListQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', pageInfo?: { __typename?: 'PageInfo', total?: number | null, hasNextPage?: boolean | null } | null, media?: Array<{ __typename?: 'Media', trending?: number | null, id: number, description?: string | null, type?: MediaType | null, bannerImage?: string | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null, medium?: string | null } | null, title?: { __typename?: 'MediaTitle', userPreferred?: string | null } | null, tags?: Array<{ __typename?: 'MediaTag', id: number, name: string, category?: string | null, rank?: number | null } | null> | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null, endDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null } | null> | null } | null };
+
+export type GetAnimeQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
 
 
+export type GetAnimeQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', trending?: number | null, id: number, description?: string | null, type?: MediaType | null, bannerImage?: string | null, characters?: { __typename?: 'CharacterConnection', nodes?: Array<{ __typename?: 'Character', id: number, name?: { __typename?: 'CharacterName', first?: string | null, middle?: string | null, last?: string | null, full?: string | null, native?: string | null, userPreferred?: string | null } | null } | null> | null } | null, title?: { __typename?: 'MediaTitle', userPreferred?: string | null } | null, tags?: Array<{ __typename?: 'MediaTag', id: number, name: string, category?: string | null, rank?: number | null } | null> | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null, endDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null } | null };
+
+export const AnimeDetailsFragmentDoc = gql`
+    fragment AnimeDetails on Media {
+  id
+  title {
+    userPreferred
+  }
+  description
+  type
+  tags {
+    id
+    name
+    category
+    rank
+  }
+  startDate {
+    year
+    month
+    day
+  }
+  endDate {
+    year
+    month
+    day
+  }
+  bannerImage
+}
+    `;
 export const GetAnimeListDocument = gql`
     query GetAnimeList($offset: Int!) {
   Page(page: $offset, perPage: 30) {
+    pageInfo {
+      total
+      hasNextPage
+    }
     media {
-      id
-      title {
-        userPreferred
-      }
-      type
-      startDate {
-        year
-        month
-        day
-      }
+      ...AnimeDetails
+      trending
       coverImage {
-        extraLarge
         large
         medium
-        color
       }
     }
   }
 }
-    `;
+    ${AnimeDetailsFragmentDoc}`;
 
 /**
  * __useGetAnimeListQuery__
@@ -4738,3 +4767,57 @@ export type GetAnimeListQueryHookResult = ReturnType<typeof useGetAnimeListQuery
 export type GetAnimeListLazyQueryHookResult = ReturnType<typeof useGetAnimeListLazyQuery>;
 export type GetAnimeListSuspenseQueryHookResult = ReturnType<typeof useGetAnimeListSuspenseQuery>;
 export type GetAnimeListQueryResult = Apollo.QueryResult<GetAnimeListQuery, GetAnimeListQueryVariables>;
+export const GetAnimeDocument = gql`
+    query GetAnime($id: Int!) {
+  Media(id: $id) {
+    ...AnimeDetails
+    trending
+    characters {
+      nodes {
+        id
+        name {
+          first
+          middle
+          last
+          full
+          native
+          userPreferred
+        }
+      }
+    }
+  }
+}
+    ${AnimeDetailsFragmentDoc}`;
+
+/**
+ * __useGetAnimeQuery__
+ *
+ * To run a query within a React component, call `useGetAnimeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAnimeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAnimeQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetAnimeQuery(baseOptions: Apollo.QueryHookOptions<GetAnimeQuery, GetAnimeQueryVariables> & ({ variables: GetAnimeQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAnimeQuery, GetAnimeQueryVariables>(GetAnimeDocument, options);
+      }
+export function useGetAnimeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAnimeQuery, GetAnimeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAnimeQuery, GetAnimeQueryVariables>(GetAnimeDocument, options);
+        }
+export function useGetAnimeSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAnimeQuery, GetAnimeQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAnimeQuery, GetAnimeQueryVariables>(GetAnimeDocument, options);
+        }
+export type GetAnimeQueryHookResult = ReturnType<typeof useGetAnimeQuery>;
+export type GetAnimeLazyQueryHookResult = ReturnType<typeof useGetAnimeLazyQuery>;
+export type GetAnimeSuspenseQueryHookResult = ReturnType<typeof useGetAnimeSuspenseQuery>;
+export type GetAnimeQueryResult = Apollo.QueryResult<GetAnimeQuery, GetAnimeQueryVariables>;

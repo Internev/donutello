@@ -1,27 +1,61 @@
+fragment AnimeDetails on Media {
+  id
+  title {
+    userPreferred
+  }
+  description
+  type
+  tags {
+    id
+    name
+    category
+    rank
+  }
+  startDate {
+    year
+    month
+    day
+  }
+  endDate {
+    year
+    month
+    day
+  }
+  bannerImage
+}
+
 query GetAnimeList($offset: Int!) {
   Page(page: $offset, perPage: 30) {
+    pageInfo{
+      total
+      hasNextPage
+    }
     media {
-      id
-      title {
-        userPreferred
-      }
-      description
-      trailer {
-        id
-        site
-        
-      }
-      type
-      startDate {
-        year
-        month
-        day
-      }
+      ...AnimeDetails
+      trending
       coverImage {
-        extraLarge
         large
         medium
-        color
+      }
+    }
+  }
+}
+
+query GetAnime($id: Int!) {
+  Media(id: $id) {
+    ...AnimeDetails
+    trending
+    characters {
+      nodes{
+        id
+        name {
+          first
+          middle
+          last
+          full
+          native
+          userPreferred
+        }
       }
     }
   }
