@@ -3,9 +3,11 @@
 import { useGetAnimeListQuery } from '@/graphql/generated/graphql'
 import { Container, SimpleGrid } from "@chakra-ui/react"
 import AnimeCard from './AnimeCard'
-import { response } from '@/app/dummy'
 import Link from 'next/link'
 
+// Anilist API wasn't too robust...
+import { response } from '@/app/dummy'
+const { data } = response
 
 const AnimeList = () => {
   // const { data, error, loading, fetchMore } = useGetAnimeListQuery({
@@ -15,19 +17,17 @@ const AnimeList = () => {
   // if (loading) return <div>Loading...</div>
   // if (error) return <div>Error loading data</div>
 
-  const data = response
 
-  console.log('data', data)
   const animeList = data?.Page?.media
   return (
-    <Container maxW={'4xl'}>
+    <Container maxW={'6xl'}>
       <SimpleGrid
-        columns={{ base: 1, sm: 1, md: 2, lg: 2, xl: 3 }}
+        columns={{ base: 1, sm: 1, md: 3, lg: 3, xl: 4 }}
         mb={20}
         gap="40px"
       >
         {animeList?.map((anime) => (
-          <Link href={`/anime/details/${anime?.id}`} as={`/anime/details/${anime.id}`} key={anime?.id}>
+          <Link href={`/anime/details/${anime?.id}`} as={`/anime/details/${anime?.id}`} key={anime?.id}>
             <AnimeCard anime={anime} />
           </Link>
         ))}
