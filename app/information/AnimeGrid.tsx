@@ -3,7 +3,7 @@
 import { useGetAnimeListSuspenseQuery } from '@/graphql/generated/graphql'
 import AnimeCard from './AnimeCard'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { SimpleGrid, Container } from '@chakra-ui/react'
 
 /**
@@ -27,8 +27,13 @@ import { SimpleGrid, Container } from '@chakra-ui/react'
 
 const AnimeGrid = () => {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const page = searchParams.get('page')
-  const currentPage = page ? parseInt(page) : 1
+  let currentPage = page ? parseInt(page) : 1
+  if (!currentPage || currentPage < 1) {
+    currentPage = 1
+    router.push('/information?page=1')
+  }
   const { data } = useGetAnimeListSuspenseQuery({
     variables: { offset: currentPage - 1 },
   })
