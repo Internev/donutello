@@ -4,6 +4,8 @@ fragment AnimeDetails on Media {
     userPreferred
   }
   description
+  averageScore
+  favourites
   type
   tags {
     id

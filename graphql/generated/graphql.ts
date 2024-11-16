@@ -4673,21 +4673,21 @@ export type YearStats = {
   year?: Maybe<Scalars['Int']['output']>;
 };
 
-export type AnimeDetailsFragment = { __typename?: 'Media', id: number, description?: string | null, type?: MediaType | null, bannerImage?: string | null, title?: { __typename?: 'MediaTitle', userPreferred?: string | null } | null, tags?: Array<{ __typename?: 'MediaTag', id: number, name: string, category?: string | null, rank?: number | null } | null> | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null, endDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null };
+export type AnimeDetailsFragment = { __typename?: 'Media', id: number, description?: string | null, averageScore?: number | null, favourites?: number | null, type?: MediaType | null, bannerImage?: string | null, title?: { __typename?: 'MediaTitle', userPreferred?: string | null } | null, tags?: Array<{ __typename?: 'MediaTag', id: number, name: string, category?: string | null, rank?: number | null } | null> | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null, endDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null };
 
 export type GetAnimeListQueryVariables = Exact<{
   offset: Scalars['Int']['input'];
 }>;
 
 
-export type GetAnimeListQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', pageInfo?: { __typename?: 'PageInfo', total?: number | null, hasNextPage?: boolean | null } | null, media?: Array<{ __typename?: 'Media', trending?: number | null, id: number, description?: string | null, type?: MediaType | null, bannerImage?: string | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null, medium?: string | null } | null, title?: { __typename?: 'MediaTitle', userPreferred?: string | null } | null, tags?: Array<{ __typename?: 'MediaTag', id: number, name: string, category?: string | null, rank?: number | null } | null> | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null, endDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null } | null> | null } | null };
+export type GetAnimeListQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', pageInfo?: { __typename?: 'PageInfo', total?: number | null, hasNextPage?: boolean | null } | null, media?: Array<{ __typename?: 'Media', trending?: number | null, id: number, description?: string | null, averageScore?: number | null, favourites?: number | null, type?: MediaType | null, bannerImage?: string | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null, medium?: string | null } | null, title?: { __typename?: 'MediaTitle', userPreferred?: string | null } | null, tags?: Array<{ __typename?: 'MediaTag', id: number, name: string, category?: string | null, rank?: number | null } | null> | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null, endDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null } | null> | null } | null };
 
 export type GetAnimeQueryVariables = Exact<{
   id: Scalars['Int']['input'];
 }>;
 
 
-export type GetAnimeQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', trending?: number | null, id: number, description?: string | null, type?: MediaType | null, bannerImage?: string | null, characters?: { __typename?: 'CharacterConnection', nodes?: Array<{ __typename?: 'Character', id: number, name?: { __typename?: 'CharacterName', first?: string | null, middle?: string | null, last?: string | null, full?: string | null, native?: string | null, userPreferred?: string | null } | null } | null> | null } | null, title?: { __typename?: 'MediaTitle', userPreferred?: string | null } | null, tags?: Array<{ __typename?: 'MediaTag', id: number, name: string, category?: string | null, rank?: number | null } | null> | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null, endDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null } | null };
+export type GetAnimeQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', trending?: number | null, id: number, description?: string | null, averageScore?: number | null, favourites?: number | null, type?: MediaType | null, bannerImage?: string | null, characters?: { __typename?: 'CharacterConnection', nodes?: Array<{ __typename?: 'Character', id: number, name?: { __typename?: 'CharacterName', first?: string | null, middle?: string | null, last?: string | null, full?: string | null, native?: string | null, userPreferred?: string | null } | null } | null> | null } | null, title?: { __typename?: 'MediaTitle', userPreferred?: string | null } | null, tags?: Array<{ __typename?: 'MediaTag', id: number, name: string, category?: string | null, rank?: number | null } | null> | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null, endDate?: { __typename?: 'FuzzyDate', year?: number | null, month?: number | null, day?: number | null } | null } | null };
 
 export const AnimeDetailsFragmentDoc = gql`
     fragment AnimeDetails on Media {
@@ -4696,6 +4696,8 @@ export const AnimeDetailsFragmentDoc = gql`
     userPreferred
   }
   description
+  averageScore
+  favourites
   type
   tags {
     id
