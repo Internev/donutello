@@ -20,7 +20,6 @@ async function getOrCreateUser(username: string, jobtitle: string): Promise<User
       DO UPDATE SET jobtitle = ${jobtitle}
       RETURNING *
     `
-    console.log('got from db:', user)
     return user.rows[0]
   } catch (error) {
     console.error('Failed to fetch user:', error)
@@ -40,10 +39,12 @@ export const { auth, signIn, signOut } = NextAuth({
       if (parsedCredentials.success) {
         const { username, jobtitle } = parsedCredentials.data
         const user = await getOrCreateUser(username, jobtitle)
-        console.log('User after getOrCreateUser:', user)
         if (!user) return null // TODO: something helpful to handle this
-
-        return user
+        return {
+          id: user.id,
+          username: user.username,
+          jobtitle: user.jobtitle,
+        }
       }
       console.log('Credential validation failed')
       return null
