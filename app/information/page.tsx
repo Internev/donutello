@@ -1,14 +1,7 @@
-'use client'
-
-import { useGetAnimeListQuery } from '@/graphql/generated/graphql'
 import { Container, SimpleGrid } from "@chakra-ui/react"
 import AnimeList from './AnimeList'
 import { Suspense } from 'react'
 import AnimeListFallback from './AnimeListFallback'
-
-// Anilist API wasn't too robust...
-// import { response } from '@/app/dummy'
-// const { data } = response
 
 const Information = () => {
   return (
