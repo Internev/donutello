@@ -6,6 +6,25 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { SimpleGrid, Container } from '@chakra-ui/react'
 
+/**
+ * Displays a responsive grid of anime cards with data from the AniList API.
+ * 
+ * Features:
+ * - Responsive layout (1-4 columns based on viewport)
+ * - Suspense-enabled data fetching
+ * - Pagination support via URL parameters
+ * - Links to detailed view for each anime
+ * 
+ * @example
+ * <Suspense fallback={<AnimeGridFallback />}>
+ *   <AnimeGrid />
+ * </Suspense>
+ * 
+ * @remarks
+ * - Grid layout adjusts columns based on breakpoints: base(1), md(3), xl(4)
+ * - Handles page-based data fetching using URL search params
+ */
+
 const AnimeGrid = () => {
   const searchParams = useSearchParams()
   const page = searchParams.get('page')

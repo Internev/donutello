@@ -3,6 +3,28 @@ import { Card, CardBody, Image, Stack, Text, Box, Tooltip, useColorModeValue } f
 
 type AnimeMedia = NonNullable<NonNullable<GetAnimeListQuery['Page']>['media']>[number]
 
+/**
+ * Card component displaying summary information for an anime entry.
+ * 
+ * Features:
+ * - Fixed dimensions (250px × 400px)
+ * - Cover image with hover overlay
+ * - Popular anime indicator (⭐️) for entries with 5000+ favorites
+ * - Rating display with color coding (green/yellow/red)
+ * - Title truncation for long names (>50 chars)
+ * 
+ * @param {Object} props
+ * @param {AnimeMedia} props.anime - Anime data object from AniList API
+ * 
+ * @example
+ * <AnimeCard anime={animeData} />
+ * 
+ * @remarks
+ * - Hover overlay shows additional information (type, rating, favorites, date)
+ * - Color-coded ratings: green (≥75%), yellow (≥50%), red (<50%)
+ * - Responsive image handling with fallback support
+ */
+
 const makeNiceDate = (startYear: string, endYear: string) => {
   if (startYear === endYear) {
     return startYear

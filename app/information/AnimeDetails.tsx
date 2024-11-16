@@ -19,6 +19,27 @@ import { useRouter, usePathname } from 'next/navigation'
 
 type AnimeMedia = NonNullable<GetAnimeQuery['Media']>
 
+/**
+ * Detailed view component for a single anime entry.
+ * 
+ * Features:
+ * - Full-width banner image display
+ * - Title and description
+ * - Character list (up to 12 characters)
+ * - Tag list with category labels
+ * - Responsive layout with Chakra UI components
+ * - HTML sanitization for description text
+ * 
+ * @example
+ * <AnimeDetails />
+ * 
+ * @remarks
+ * - Requires valid anime ID in URL path
+ * - Automatically redirects to information page on invalid ID
+ * - Uses suspense query for data fetching
+ * - Sanitizes HTML in description field
+ */
+
 const CharacterList = ({ characters }: { characters: AnimeMedia['characters'] }) => {
 
   const bgCard = useColorModeValue('white', 'gray.800')

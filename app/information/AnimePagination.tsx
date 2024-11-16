@@ -6,6 +6,25 @@ import { useGetAnimeListSuspenseQuery } from '@/graphql/generated/graphql'
 
 export const visiblePages = 5
 
+/**
+ * A paginated navigation component for browsing anime listings.
+ * 
+ * Features:
+ * - Displays a configurable number of page buttons (default: 5)
+ * - Previous/Next navigation buttons
+ * - Automatically adjusts visible page numbers based on current page
+ * - Updates URL query parameters for page state
+ * - Uses suspense-enabled query for anime list data
+ * 
+ * @example
+ * <AnimePagination />
+ * 
+ * @remarks
+ * - Relies on URL search params for page state
+ * - Uses Apollo Client cache to avoid redundant queries
+ * - Accessibility: Includes ARIA labels and current page indicators
+ */
+
 const Pagination = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
