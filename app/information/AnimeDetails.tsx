@@ -70,7 +70,7 @@ const TagList: React.FC<{ tags: AnimeDetails['tags'] }> = ({ tags }) => {
       <SimpleGrid columns={{ base: 2, md: 3 }} spacing={2}>
         {tags.map((tag) => {
           return (
-            <Tag>{tag?.name}</Tag>
+            <Tag key={tag?.id}>{tag?.name}</Tag>
           )
         })}
       </SimpleGrid>

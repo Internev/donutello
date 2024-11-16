@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Card, CardBody, Stack, Show, Skeleton, SkeletonText } from '@chakra-ui/react'
+import { Card, CardBody, Stack, Show, Skeleton, SkeletonText, SimpleGrid, Box } from '@chakra-ui/react'
 
 const AnimeCardSkeleton = () => {
   const CardDisplaySkeleton = () => {
@@ -23,13 +23,23 @@ const AnimeCardSkeleton = () => {
   )
 }
 
-const AnimeListFallback = () => {
+const AnimeGridFallback = () => {
   const animeList = Array(30).fill('')
-  return animeList?.map((_, i) => (
-    <Link href="#" key={`skeleton-${i}`}>
-      <AnimeCardSkeleton />
-    </Link>
-  ))
+  return (
+    <SimpleGrid
+      columns={{ base: 1, sm: 1, md: 3, lg: 3, xl: 4 }}
+      gap="40px"
+      width="100%"
+    >
+      {animeList?.map((_, i) => (
+        <Link href="#" key={`skeleton-${i}`}>
+          <AnimeCardSkeleton />
+        </Link>
+      ))}
+    </SimpleGrid>
+  )
 }
 
-export default AnimeListFallback
+export default AnimeGridFallback
+
+
