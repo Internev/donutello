@@ -4,18 +4,8 @@ import { useGetAnimeListSuspenseQuery } from '@/graphql/generated/graphql'
 import AnimeCard from './AnimeCard'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { SimpleGrid } from '@chakra-ui/react'
+import { SimpleGrid, Container, Heading, Text, VStack, useColorModeValue } from '@chakra-ui/react'
 
-// Anilist API wasn't too robust...
-// import { response } from '@/app/dummy'
-// const { data } = response
-
-// When fetching more data, the suspense isn't shown.
-// I went back and forth on whether it's better UX
-// to remain on the same page or to show the skeleton.
-// The suspense query doesn't seem to provide a "pending"
-// and I couldn't find a nice way to show a little spinner
-// on more data fetch, though I'm sure there is one.
 const AnimeGrid = () => {
   const searchParams = useSearchParams()
   const page = searchParams.get('page')
@@ -25,22 +15,32 @@ const AnimeGrid = () => {
   })
 
   const animeList = data?.Page?.media
+  const totalPages = data?.Page?.pageInfo?.total
+  const bgColor = useColorModeValue('gray.50', 'gray.900')
+  const textColor = useColorModeValue('gray.700', 'gray.200')
 
   return (
-    <SimpleGrid
-      columns={{ base: 1, sm: 1, md: 3, lg: 3, xl: 4 }}
-      gap="40px"
-      width="100%"
+    <Container
+      maxW="7xl"
+      px={{ base: 2, sm: 4, md: 6 }}
     >
-      {animeList?.map((anime) => (
-        <Link
-          href={`/information/details/${anime?.id}`}
-          key={anime?.id}
-        >
-          <AnimeCard anime={anime} />
-        </Link>
-      ))}
-    </SimpleGrid>
+      <SimpleGrid
+        columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
+        spacing={{ base: 4, md: 6 }}
+        width="100%"
+        justifyItems="center"
+      >
+        {animeList?.map((anime) => (
+          <Link
+            href={`/information/details/${anime?.id}`}
+            key={anime?.id}
+            style={{ width: '100%' }}
+          >
+            <AnimeCard anime={anime} />
+          </Link>
+        ))}
+      </SimpleGrid>
+    </Container>
   )
 }
 

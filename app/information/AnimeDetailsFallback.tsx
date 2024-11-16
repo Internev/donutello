@@ -1,31 +1,59 @@
-'use client'
-
 import {
   Box,
   Container,
   Stack,
-  Skeleton,
-  SkeletonText,
-  Flex,
-  Button,
   SimpleGrid,
   StackDivider,
   useColorModeValue,
-  Card,
-  CardBody,
+  Skeleton,
+  SkeletonText,
+  VStack,
 } from '@chakra-ui/react'
 
+const AnimeStatsSkeleton = () => {
+
+  return (
+    <SimpleGrid
+      columns={{ base: 2, md: 4 }}
+      spacing={4}
+      mb={8}
+    >
+      {Array.from({ length: 3 }).map((_, index) => (
+        <Box
+          key={`stat-skeleton-${index}`}
+          p={4}
+          borderRadius="lg"
+          borderWidth="1px"
+          gridColumn={index === 2 ? { base: '1/3', md: 'auto' } : 'auto'}
+        >
+          <VStack>
+            <Skeleton height="24px" width="60%" />
+            <Skeleton height="16px" width="80%" />
+          </VStack>
+        </Box>
+      ))}
+    </SimpleGrid>
+  )
+}
+
 const CharacterListSkeleton = () => {
+
   return (
     <Box>
       <Skeleton height="24px" width="120px" mb={4} />
-      <SimpleGrid columns={{ base: 2, md: 3 }}>
+      <SimpleGrid
+        columns={{ base: 2, md: 3, lg: 4 }}
+        spacing={4}
+      >
         {Array.from({ length: 12 }).map((_, index) => (
-          <Card variant={'unstyled'} key={`character-skeleton-${index}`}>
-            <CardBody>
-              <Skeleton height="20px" width="80%" />
-            </CardBody>
-          </Card>
+          <Box
+            key={`character-skeleton-${index}`}
+            p={3}
+            borderRadius="md"
+            borderWidth="1px"
+          >
+            <Skeleton height="20px" />
+          </Box>
         ))}
       </SimpleGrid>
     </Box>
@@ -36,9 +64,16 @@ const TagListSkeleton = () => {
   return (
     <Box>
       <Skeleton height="24px" width="120px" mb={4} />
-      <SimpleGrid columns={{ base: 2, md: 3 }} spacing={2}>
+      <SimpleGrid
+        columns={{ base: 2, md: 3, lg: 4 }}
+        spacing={2}
+      >
         {Array.from({ length: 8 }).map((_, index) => (
-          <Skeleton key={`tag-skeleton-${index}`} height="24px" borderRadius="full" />
+          <Skeleton
+            key={`tag-skeleton-${index}`}
+            height="24px"
+            borderRadius="full"
+          />
         ))}
       </SimpleGrid>
     </Box>
@@ -46,53 +81,48 @@ const TagListSkeleton = () => {
 }
 
 const AnimeDetailsSkeleton = () => {
+
   return (
-    <Container maxW={'7xl'} py={6}>
-      <Flex>
-        <Skeleton
-          height="300px"
-          width="100%"
-          borderRadius="md"
-        />
-      </Flex>
-      <Stack spacing={{ base: 6, md: 10 }}>
-        <Box as={'header'}>
-          <Skeleton
-            height={{ base: '30px', sm: '40px', lg: '50px' }}
-            width="60%"
-            mt={6}
-          />
+    <Container maxW="7xl" py={8}>
+      {/* Banner Image Skeleton */}
+      <Box
+        position="relative"
+        mb={8}
+        borderRadius="xl"
+        overflow="hidden"
+      >
+        <Skeleton height="400px" width="100%" />
+      </Box>
+
+      {/* Content */}
+      <VStack spacing={6} align="stretch">
+        {/* Title */}
+        <Skeleton height="36px" width="60%" />
+
+        {/* Stats */}
+        <AnimeStatsSkeleton />
+
+        {/* Description */}
+        <Box
+          p={6}
+          borderRadius="lg"
+          borderWidth="1px"
+        >
+          <SkeletonText noOfLines={6} spacing={4} skeletonHeight="4" />
         </Box>
 
+        {/* Characters and Tags */}
         <Stack
-          spacing={{ base: 4, sm: 6 }}
-          direction={'column'}
-          divider={
-            <StackDivider borderColor={useColorModeValue('gray.200', 'gray.600')} />
-          }>
-          <SkeletonText noOfLines={6} spacing={4} />
-
+          spacing={8}
+          divider={<StackDivider />}
+        >
           <CharacterListSkeleton />
           <TagListSkeleton />
         </Stack>
 
-        <Button
-          rounded={'none'}
-          w={'full'}
-          mt={8}
-          size={'lg'}
-          py={'7'}
-          bg={useColorModeValue('gray.900', 'gray.50')}
-          color={useColorModeValue('white', 'gray.900')}
-          textTransform={'uppercase'}
-          isDisabled
-          _hover={{
-            transform: 'translateY(2px)',
-            boxShadow: 'lg',
-          }}>
-          Add to favourites
-        </Button>
-      </Stack>
+        {/* Action Button */}
+        <Skeleton height="48px" borderRadius="md" />
+      </VStack>
     </Container>
   )
 }

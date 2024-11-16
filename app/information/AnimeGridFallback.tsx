@@ -1,45 +1,60 @@
 import Link from "next/link"
-import { Card, CardBody, Stack, Show, Skeleton, SkeletonText, SimpleGrid, Box } from '@chakra-ui/react'
+import {
+  Card,
+  CardBody,
+  Stack,
+  Skeleton,
+  SkeletonText,
+  SimpleGrid,
+  Container,
+} from '@chakra-ui/react'
 
 const AnimeCardSkeleton = () => {
-  const CardDisplaySkeleton = () => {
-    return (
+  return (
+    <Card
+      maxW='sm'
+      height='400px'
+      width='250px'
+      variant='outline'
+    >
       <CardBody>
         <Skeleton
-          height="320px"
-          borderRadius="lg"
+          height='320px'
+          width='250px'
+          borderRadius='lg'
         />
-        <Stack mt="2" spacing="3">
-          <SkeletonText noOfLines={2} />
+        <Stack mt="3" spacing="1">
+          <SkeletonText
+            noOfLines={2}
+            spacing="2"
+          />
         </Stack>
       </CardBody>
-    )
-  }
-
-  return (
-    <Card maxW="sm" height="400px" variant="unstyled">
-      <CardDisplaySkeleton />
     </Card>
   )
 }
 
 const AnimeGridFallback = () => {
   const animeList = Array(30).fill('')
+
   return (
-    <SimpleGrid
-      columns={{ base: 1, sm: 1, md: 3, lg: 3, xl: 4 }}
-      gap="40px"
-      width="100%"
+    <Container
+      maxW="7xl"
+      px={{ base: 2, sm: 4, md: 6 }}
     >
-      {animeList?.map((_, i) => (
-        <Link href="#" key={`skeleton-${i}`}>
-          <AnimeCardSkeleton />
-        </Link>
-      ))}
-    </SimpleGrid>
+      <SimpleGrid
+        columns={{ base: 1, sm: 1, md: 3, lg: 3, xl: 4 }}
+        gap="40px"
+        width="100%"
+      >
+        {animeList?.map((_, i) => (
+          <Link href="#" key={`skeleton-${i}`}>
+            <AnimeCardSkeleton />
+          </Link>
+        ))}
+      </SimpleGrid>
+    </Container>
   )
 }
 
 export default AnimeGridFallback
-
-

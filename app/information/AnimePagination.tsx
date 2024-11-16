@@ -1,19 +1,16 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Button, ButtonGroup, Flex } from '@chakra-ui/react'
+import { Button, ButtonGroup, Flex, Box, useColorModeValue } from '@chakra-ui/react'
 import { useGetAnimeListSuspenseQuery } from '@/graphql/generated/graphql'
 
 export const visiblePages = 5
 
-const Pagination: React.FC = () => {
+const Pagination = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const currentPage = parseInt(searchParams.get('page') || '1')
 
-  // I believe that reusing the query here will be more efficient
-  // because Apollo will figure out that the query is already in the cache
-  // and do something tricky to avoid the race condition.
   const { data } = useGetAnimeListSuspenseQuery({
     variables: { offset: 0 },
   })
@@ -41,13 +38,30 @@ const Pagination: React.FC = () => {
     )
   }
 
+  // Theme colors
+  const buttonBg = useColorModeValue('white', 'gray.800')
+  const buttonBorder = useColorModeValue('gray.200', 'gray.600')
+  const activeButtonBg = 'brand.pink.400'
+  const activeButtonColor = 'white'
+  const buttonHoverBg = useColorModeValue('gray.50', 'gray.700')
+
   return (
-    <Flex justify="center" align="center" mt={4}>
-      <ButtonGroup spacing={2} variant="outline">
+    <Flex justify="center" align="center" mt={4} mb={4}>
+      <ButtonGroup
+        spacing="2"
+        variant="outline"
+        bg={useColorModeValue('white', 'gray.800')}
+        p={2}
+        borderRadius="lg"
+        boxShadow="sm"
+      >
         <Button
           onClick={() => handlePageChange(currentPage - 1)}
           isDisabled={currentPage <= 1}
           aria-label="Previous page"
+          bg={buttonBg}
+          borderColor={buttonBorder}
+          _hover={{ bg: buttonHoverBg }}
         >
           {'<'}
         </Button>
@@ -56,8 +70,13 @@ const Pagination: React.FC = () => {
           <Button
             key={page}
             onClick={() => handlePageChange(page)}
-            colorScheme={currentPage === page ? 'blue' : 'gray'}
-            variant={currentPage === page ? 'solid' : 'outline'}
+            bg={currentPage === page ? activeButtonBg : buttonBg}
+            color={currentPage === page ? activeButtonColor : undefined}
+            borderColor={buttonBorder}
+            _hover={currentPage === page ?
+              { bg: 'brand.pink.500' } :
+              { bg: buttonHoverBg }
+            }
             aria-label={`Go to page ${page}`}
             aria-current={currentPage === page ? 'page' : undefined}
           >
@@ -69,6 +88,9 @@ const Pagination: React.FC = () => {
           onClick={() => handlePageChange(currentPage + 1)}
           isDisabled={currentPage >= totalPages}
           aria-label="Next page"
+          bg={buttonBg}
+          borderColor={buttonBorder}
+          _hover={{ bg: buttonHoverBg }}
         >
           {'>'}
         </Button>

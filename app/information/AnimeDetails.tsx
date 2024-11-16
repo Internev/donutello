@@ -1,6 +1,6 @@
 'use client'
 
-import { useGetAnimeQuery, GetAnimeQuery, useGetAnimeSuspenseQuery } from "@/graphql/generated/graphql"
+import { GetAnimeQuery, useGetAnimeSuspenseQuery } from "@/graphql/generated/graphql"
 import {
   Box,
   Container,
@@ -13,138 +13,232 @@ import {
   SimpleGrid,
   StackDivider,
   useColorModeValue,
-  List,
-  ListItem,
-  Card,
-  CardBody,
   Tag,
+  Icon,
+  HStack,
+  VStack,
 } from '@chakra-ui/react'
-import { useRouter } from 'next/navigation'
-import { usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 
-type AnimeDetails = NonNullable<GetAnimeQuery['Media']>
+type AnimeMedia = NonNullable<GetAnimeQuery['Media']>
 
-const CharacterList: React.FC<{ characters: AnimeDetails['characters'] }> = ({ characters }) => {
-  // It'd be neat to link to the character's page here
+const CharacterList = ({ characters }: { characters: AnimeMedia['characters'] }) => {
   if (!characters?.nodes) return null
+
+  const bgCard = useColorModeValue('white', 'gray.800')
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
+
   return (
     <Box>
-      <Text
-        fontSize={{ base: '16px', lg: '18px' }}
-        color={useColorModeValue('yellow.500', 'yellow.300')}
-        fontWeight={'500'}
-        textTransform={'uppercase'}
-        mb={'4'}>
+      <Heading
+        size="md"
+        mb={4}
+        color="brand.pink.400"
+      >
         Characters
-      </Text>
-      <SimpleGrid columns={{ base: 2, md: 3 }}>
-        {characters.nodes && characters.nodes
+      </Heading>
+      <SimpleGrid
+        columns={{ base: 2, md: 3, lg: 4 }}
+        spacing={4}
+      >
+        {characters.nodes
           .slice(0, 12)
-          .map((character) => {
-            return (
-              <Card variant={'unstyled'} key={character?.id}>
-                <CardBody>
-                  <Text>{character?.name?.userPreferred}</Text>
-                </CardBody>
-              </Card>
-            )
-          }
-          )}
+          .map((character) => (
+            <Box
+              key={character?.id}
+              p={3}
+              bg={bgCard}
+              borderRadius="md"
+              borderWidth="1px"
+              borderColor={borderColor}
+              transition="all 0.2s"
+              _hover={{ transform: 'translateY(-2px)', shadow: 'md' }}
+            >
+              <Text fontSize="sm" fontWeight="medium">
+                {character?.name?.userPreferred}
+              </Text>
+            </Box>
+          ))}
       </SimpleGrid>
     </Box>
   )
 }
 
-const TagList: React.FC<{ tags: AnimeDetails['tags'] }> = ({ tags }) => {
+const TagList = ({ tags }: { tags: AnimeMedia['tags'] }) => {
   if (!tags) return null
+
   return (
     <Box>
-      <Text
-        fontSize={{ base: '16px', lg: '18px' }}
-        color={useColorModeValue('yellow.500', 'yellow.300')}
-        fontWeight={'500'}
-        textTransform={'uppercase'}
-        mb={'4'}>
+      <Heading
+        size="md"
+        mb={4}
+        color="brand.pink.400"
+      >
         Tags
-      </Text>
-      <SimpleGrid columns={{ base: 2, md: 3 }} spacing={2}>
-        {tags.map((tag) => {
-          return (
-            <Tag key={tag?.id}>{tag?.name}</Tag>
-          )
-        })}
+      </Heading>
+      <SimpleGrid
+        columns={{ base: 2, md: 3, lg: 4 }}
+        spacing={2}
+      >
+        {tags.map((tag) => (
+          <Tag
+            key={tag?.id}
+            size="md"
+            variant="subtle"
+            colorScheme="pink"
+            justifyContent="center"
+          >
+            {tag?.name}
+          </Tag>
+        ))}
       </SimpleGrid>
     </Box>
   )
 }
 
-const AnimeDetails: React.FC = () => {
+const AnimeStats = ({ anime }: { anime: AnimeMedia }) => {
+  const bgBox = useColorModeValue('white', 'gray.800')
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
+
+  return (
+    <SimpleGrid
+      columns={{ base: 2, md: 4 }}
+      spacing={4}
+      mb={8}
+    >
+      <Box
+        p={4}
+        bg={bgBox}
+        borderRadius="lg"
+        borderWidth="1px"
+        borderColor={borderColor}
+      >
+        <VStack>
+          <Text fontWeight="bold">{anime?.favourites?.toLocaleString()}</Text>
+          <Text fontSize="sm" color="gray.500">Favorites</Text>
+        </VStack>
+      </Box>
+      <Box
+        p={4}
+        bg={bgBox}
+        borderRadius="lg"
+        borderWidth="1px"
+        borderColor={borderColor}
+      >
+        <VStack>
+          <Text fontWeight="bold">{anime?.averageScore}%</Text>
+          <Text fontSize="sm" color="gray.500">Rating</Text>
+        </VStack>
+      </Box>
+      <Box
+        p={4}
+        bg={bgBox}
+        borderRadius="lg"
+        borderWidth="1px"
+        borderColor={borderColor}
+        gridColumn={{ base: '1/3', md: 'auto' }}
+      >
+        <VStack>
+          <Text fontWeight="bold">
+            {anime?.startDate?.year || 'TBA'}
+            {anime?.endDate?.year && anime?.endDate?.year !== anime?.startDate?.year
+              ? ` - ${anime?.endDate?.year}`
+              : ''}
+          </Text>
+          <Text fontSize="sm" color="gray.500">Year</Text>
+        </VStack>
+      </Box>
+    </SimpleGrid>
+  )
+}
+
+const AnimeDetails = () => {
   const pathName = usePathname()
   const id = pathName.split('/').pop()
+  const router = useRouter()
 
   if (!id || isNaN(Number(id))) {
-    // I'd do something nicer in real life, like show a timed error message then redirect
-    const router = useRouter()
     router.push('/information')
     return null
   }
+
   const { data } = useGetAnimeSuspenseQuery({ variables: { id: Number(id) } })
+  const anime = data?.Media
 
   const sanitizeDescription = (description: string) => {
     return description.replace(/<[^>]*>?/gm, '')
   }
 
-  const anime = data?.Media
-  return (
-    <Container maxW={'7xl'} py={6}>
-      <Flex>
-        <Image
-          rounded={'md'}
-          alt={`${anime?.title?.userPreferred} banner`}
-          src={anime?.bannerImage || ''}
-          w={'100%'}
-        />
-      </Flex>
-      <Stack spacing={{ base: 6, md: 10 }}>
-        <Box as={'header'}>
-          <Heading
-            lineHeight={1.1}
-            fontWeight={600}
-            fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}>
-            {anime?.title?.userPreferred}
-          </Heading>
-        </Box>
+  const bgBox = useColorModeValue('white', 'gray.800')
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const textColor = useColorModeValue('gray.700', 'gray.300')
 
-        <Stack
-          spacing={{ base: 4, sm: 6 }}
-          direction={'column'}
-          divider={
-            <StackDivider borderColor={useColorModeValue('gray.200', 'gray.600')} />
-          }>
-          <Text fontSize={'lg'}>
+  return (
+    <Container maxW="7xl" py={8}>
+      {/* Banner Image */}
+      <Box
+        position="relative"
+        mb={8}
+        borderRadius="xl"
+        overflow="hidden"
+      >
+        <Image
+          src={anime?.bannerImage || ''}
+          alt={`${anime?.title?.userPreferred} banner`}
+          objectFit="cover"
+        />
+      </Box>
+
+      {/* Title and Stats */}
+      <VStack spacing={6} align="stretch">
+        <Heading
+          size="2xl"
+          color="brand.pink.400"
+        >
+          {anime?.title?.userPreferred}
+        </Heading>
+
+        {anime && <AnimeStats anime={anime} />}
+
+        {/* Description */}
+        <Box
+          p={6}
+          bg={bgBox}
+          borderRadius="lg"
+          borderWidth="1px"
+          borderColor={borderColor}
+        >
+          <Text
+            fontSize="lg"
+            color={textColor}
+            lineHeight="tall"
+          >
             {sanitizeDescription(anime?.description || '')}
           </Text>
+        </Box>
 
+        {/* Characters and Tags */}
+        <Stack
+          spacing={8}
+          divider={<StackDivider borderColor={borderColor} />}
+        >
           <CharacterList characters={anime?.characters} />
           <TagList tags={anime?.tags} />
         </Stack>
 
+        {/* Action Button */}
         <Button
-          rounded={'none'}
-          w={'full'}
-          mt={8}
-          size={'lg'}
-          py={'7'}
-          bg={useColorModeValue('gray.900', 'gray.50')}
-          color={useColorModeValue('white', 'gray.900')}
-          textTransform={'uppercase'}
+          size="lg"
+          width="full"
+          colorScheme="pink"
           _hover={{
-            transform: 'translateY(2px)',
-            boxShadow: 'lg',
-          }}>
-          Add to favourites
+            transform: 'translateY(-2px)',
+            shadow: 'lg',
+          }}
+        >
+          Add to favorites
         </Button>
-      </Stack>
+      </VStack>
     </Container>
   )
 }

@@ -1,5 +1,5 @@
 import { GetAnimeListQuery } from "@/graphql/generated/graphql"
-import { Card, CardBody, Image, Stack, Text, Box, Icon, Tooltip } from "@chakra-ui/react"
+import { Card, CardBody, Image, Stack, Text, Box, Tooltip, useColorModeValue } from "@chakra-ui/react"
 
 type AnimeMedia = NonNullable<NonNullable<GetAnimeListQuery['Page']>['media']>[number]
 
@@ -11,25 +11,50 @@ const makeNiceDate = (startYear: string, endYear: string) => {
 }
 
 const makeNiceRating = (rating: number) => {
-  const color = rating >= 75 ? 'green.400' : rating >= 50 ? 'yellow.400' : 'red.400'
-  return <Text color={color} fontWeight="bold">Rating: {rating}%</Text>
+  const getColor = (score: number) => {
+    if (score >= 75) return 'green.400'
+    if (score >= 50) return 'yellow.400'
+    return 'red.400'
+  }
+
+  return <Text color={getColor(rating)} fontWeight="semibold">Rating: {rating}%</Text>
 }
 
 const AnimeCard: React.FC<{ anime: any }> = ({ anime }) => {
   const showDate = makeNiceDate(anime.startDate?.year || '', anime.endDate?.year || '')
   const isPopular = (anime?.favourites || 0) > 5000
 
+  // Theme colors
+  const cardBg = useColorModeValue('white', 'gray.800')
+  const cardBorder = useColorModeValue('gray.200', 'gray.700')
+  const textColor = useColorModeValue('gray.700', 'gray.200')
+  const starBg = useColorModeValue('yellow.100', 'yellow.900')
+  const starColor = useColorModeValue('yellow.500', 'yellow.200')
+
   return (
-    <Card maxW='sm' height={'400px'} width={'250px'} variant={'unstyled'}>
+    <Card
+      maxW='sm'
+      height='400px'
+      width='100%'
+      variant='outline'
+      borderColor={cardBorder}
+      bg={cardBg}
+      transition="all 0.2s"
+      _hover={{
+        transform: 'translateY(-4px)',
+        boxShadow: 'lg',
+      }}
+    >
       <CardBody position="relative" overflow="hidden" role="group">
         <Box position="relative">
           <Image
-            height={'320px'}
-            width={'250px'}
-            objectFit={'cover'}
+            height='320px'
+            width='100%'
+            objectFit='cover'
             src={anime?.coverImage?.large || ''}
-            alt={anime?.title.userPreferred || 'Anime cover'}
+            alt={anime?.title?.userPreferred || 'Anime cover'}
             borderRadius='lg'
+            fallbackSrc="https://via.placeholder.com/250x320?text=Loading..."
           />
 
           {/* Popular Star */}
@@ -38,8 +63,8 @@ const AnimeCard: React.FC<{ anime: any }> = ({ anime }) => {
               label="5000+ favourites!"
               placement="top"
               hasArrow
-              bg="yellow.400"
-              color="black"
+              bg={starBg}
+              color={starColor}
             >
               <Box
                 position="absolute"
@@ -47,11 +72,16 @@ const AnimeCard: React.FC<{ anime: any }> = ({ anime }) => {
                 right={2}
                 borderRadius="full"
                 p={2}
+                bg="rgba(255, 255, 255, 0.9)"
+                backdropFilter="blur(4px)"
                 transform="rotate(0deg)"
-                transition="transform 0.3s ease"
-                _hover={{ transform: 'rotate(180deg)' }}
+                transition="all 0.3s ease"
+                _hover={{
+                  transform: 'rotate(180deg)',
+                  bg: 'rgba(255, 255, 255, 1)'
+                }}
               >
-                <Text>⭐️</Text>
+                <Text fontSize="xl">⭐️</Text>
               </Box>
             </Tooltip>
           )}
@@ -63,9 +93,9 @@ const AnimeCard: React.FC<{ anime: any }> = ({ anime }) => {
             left={0}
             right={0}
             height="70%"
-            bgGradient="radial(circle at bottom left, blackAlpha.800, transparent 68%)"
+            bgGradient="linear(to-t, blackAlpha.900, blackAlpha.700, transparent)"
             opacity={0}
-            transition="all 0.2s"
+            transition="all 0.3s ease"
             _groupHover={{ opacity: 1 }}
             display="flex"
             flexDirection="column"
@@ -73,20 +103,23 @@ const AnimeCard: React.FC<{ anime: any }> = ({ anime }) => {
             p={4}
             borderBottomRadius='lg'
           >
-            <Stack spacing={1}>
-              <Text color="white">{anime?.type}</Text>
+            <Stack spacing={2}>
+              <Text color="white" fontWeight="medium">{anime?.type}</Text>
               {makeNiceRating(anime?.averageScore)}
-              <Text color="white">♥ {anime?.favourites?.toLocaleString()}</Text>
-              <Text color="white" fontSize="sm">{showDate}</Text>
+              <Text color="white" fontSize="sm">♥ {anime?.favourites?.toLocaleString()}</Text>
+              <Text color="white" fontSize="sm" opacity={0.8}>{showDate}</Text>
             </Stack>
           </Box>
         </Box>
 
-        <Stack mt="2" spacing="3">
-          <Text>
-            {anime?.title.userPreferred.length > 50
-              ? `${anime?.title.userPreferred.substring(0, 47)}...`
-              : anime?.title.userPreferred}
+        <Stack mt="1" spacing="1">
+          <Text
+            color={textColor}
+            fontSize="md"
+            fontWeight="medium"
+            noOfLines={2}
+          >
+            {anime?.title?.userPreferred}
           </Text>
         </Stack>
       </CardBody>
