@@ -13,7 +13,6 @@ import {
   Link,
   Text,
   useColorModeValue,
-  Icon
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { handleSignOut } from '@/app/lib/actions'
@@ -31,7 +30,7 @@ const Header = ({ session }: HeaderProps) => {
     try {
       setIsSigningOut(true)
       await handleSignOut()
-    } catch (error) {
+    } catch {
       toast({
         title: 'Error signing out',
         status: 'error',

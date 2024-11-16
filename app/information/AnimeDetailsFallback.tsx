@@ -4,7 +4,6 @@ import {
   Stack,
   SimpleGrid,
   StackDivider,
-  useColorModeValue,
   Skeleton,
   SkeletonText,
   VStack,

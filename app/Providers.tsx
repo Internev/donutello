@@ -64,7 +64,7 @@ const components = {
       colorScheme: 'brand.pink',
     },
     variants: {
-      solid: (props: any) => ({
+      solid: () => ({
         bg: 'brand.pink.400',
         color: 'white',
         _hover: {
@@ -105,7 +105,7 @@ const customTheme = extendTheme({
     body: 'var(--font-geist-sans)',
   },
   styles: {
-    global: (props: any) => ({
+    global: (props: { colorMode: string }) => ({
       body: {
         bg: props.colorMode === 'dark' ? 'gray.900' : 'gray.50',
       },

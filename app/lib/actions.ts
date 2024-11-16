@@ -52,7 +52,7 @@ const SettingsSchema = z.object({
   jobtitle: z.string().min(1, 'Job title must exist'),
 })
 
-export async function updateSettings(prevState: any, formData: FormData) {
+export async function updateSettings(prevState: string | undefined, formData: FormData) {
   try {
     // Get current session to verify user
     const session = await auth()

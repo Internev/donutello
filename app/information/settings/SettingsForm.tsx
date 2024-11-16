@@ -37,7 +37,7 @@ export function SettingsForm({ id, username, jobtitle }: SettingsFormProps) {
     username: '',
     jobtitle: '',
   })
-  const [isPending, startTransition] = useTransition()
+  const [isPending] = useTransition()
   const [state, formAction] = useFormState(updateSettings, initialState)
   const toast = useToast()
 
@@ -57,25 +57,6 @@ export function SettingsForm({ id, username, jobtitle }: SettingsFormProps) {
     }
   }, [state.message, state.status, toast])
 
-  // Rest of your component remains the same...
-
-  const validateForm = () => {
-    const newErrors = {
-      username: '',
-      jobtitle: '',
-    }
-
-    if (formData.username.length < 3) {
-      newErrors.username = 'Username must be at least 3 characters'
-    }
-    if (formData.jobtitle.length < 2) {
-      newErrors.jobtitle = 'Job title must be at least 2 characters'
-    }
-
-    setErrors(newErrors)
-    return !newErrors.username && !newErrors.jobtitle
-  }
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({
@@ -88,23 +69,6 @@ export function SettingsForm({ id, username, jobtitle }: SettingsFormProps) {
         [name]: '',
       }))
     }
-  }
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    if (!validateForm()) {
-      return
-    }
-
-    const data = new FormData()
-    data.append('id', id)
-    data.append('username', formData.username)
-    data.append('jobtitle', formData.jobtitle)
-
-    startTransition(() => {
-      formAction(data)
-    })
   }
 
   const handleReset = () => {

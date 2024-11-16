@@ -7,15 +7,12 @@ import {
   Stack,
   Text,
   Image,
-  Flex,
   Button,
   Heading,
   SimpleGrid,
   StackDivider,
   useColorModeValue,
   Tag,
-  Icon,
-  HStack,
   VStack,
 } from '@chakra-ui/react'
 import { useRouter, usePathname } from 'next/navigation'
@@ -23,10 +20,10 @@ import { useRouter, usePathname } from 'next/navigation'
 type AnimeMedia = NonNullable<GetAnimeQuery['Media']>
 
 const CharacterList = ({ characters }: { characters: AnimeMedia['characters'] }) => {
-  if (!characters?.nodes) return null
 
   const bgCard = useColorModeValue('white', 'gray.800')
   const borderColor = useColorModeValue('gray.200', 'gray.700')
+  if (!characters?.nodes) return null
 
   return (
     <Box>
@@ -157,9 +154,12 @@ const AnimeDetails = () => {
   const id = pathName.split('/').pop()
   const router = useRouter()
 
+  const bgBox = useColorModeValue('white', 'gray.800')
+  const borderColor = useColorModeValue('gray.200', 'gray.700')
+  const textColor = useColorModeValue('gray.700', 'gray.300')
+
   if (!id || isNaN(Number(id))) {
     router.push('/information')
-    return null
   }
 
   const { data } = useGetAnimeSuspenseQuery({ variables: { id: Number(id) } })
@@ -169,10 +169,9 @@ const AnimeDetails = () => {
     return description.replace(/<[^>]*>?/gm, '')
   }
 
-  const bgBox = useColorModeValue('white', 'gray.800')
-  const borderColor = useColorModeValue('gray.200', 'gray.700')
-  const textColor = useColorModeValue('gray.700', 'gray.300')
-
+  if (!id || isNaN(Number(id))) {
+    return null
+  }
   return (
     <Container maxW="7xl" py={8}>
       {/* Banner Image */}

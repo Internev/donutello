@@ -7,7 +7,6 @@ import {
   Heading,
   Text,
   VStack,
-  Icon,
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
 

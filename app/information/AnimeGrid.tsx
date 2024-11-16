@@ -4,7 +4,7 @@ import { useGetAnimeListSuspenseQuery } from '@/graphql/generated/graphql'
 import AnimeCard from './AnimeCard'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { SimpleGrid, Container, Heading, Text, VStack, useColorModeValue } from '@chakra-ui/react'
+import { SimpleGrid, Container } from '@chakra-ui/react'
 
 const AnimeGrid = () => {
   const searchParams = useSearchParams()
@@ -15,9 +15,6 @@ const AnimeGrid = () => {
   })
 
   const animeList = data?.Page?.media
-  const totalPages = data?.Page?.pageInfo?.total
-  const bgColor = useColorModeValue('gray.50', 'gray.900')
-  const textColor = useColorModeValue('gray.700', 'gray.200')
 
   return (
     <Container

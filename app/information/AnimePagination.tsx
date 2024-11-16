@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Button, ButtonGroup, Flex, Box, useColorModeValue } from '@chakra-ui/react'
+import { Button, ButtonGroup, Flex, useColorModeValue, Text } from '@chakra-ui/react'
 import { useGetAnimeListSuspenseQuery } from '@/graphql/generated/graphql'
 
 export const visiblePages = 5
@@ -44,9 +44,17 @@ const Pagination = () => {
   const activeButtonBg = 'brand.pink.400'
   const activeButtonColor = 'white'
   const buttonHoverBg = useColorModeValue('gray.50', 'gray.700')
+  const textColor = useColorModeValue('gray.600', 'gray.400')
 
   return (
-    <Flex justify="center" align="center" mt={4} mb={4}>
+    <Flex
+      justify="center"
+      align="center"
+      mt={4}
+      mb={4}
+      flexDir="column"
+      gap={3}
+    >
       <ButtonGroup
         spacing="2"
         variant="outline"
@@ -95,6 +103,14 @@ const Pagination = () => {
           {'>'}
         </Button>
       </ButtonGroup>
+
+      <Text
+        color={textColor}
+        fontSize="sm"
+        fontWeight="medium"
+      >
+        Page {currentPage} of {totalPages}
+      </Text>
     </Flex>
   )
 }

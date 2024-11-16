@@ -20,8 +20,8 @@ const makeNiceRating = (rating: number) => {
   return <Text color={getColor(rating)} fontWeight="semibold">Rating: {rating}%</Text>
 }
 
-const AnimeCard: React.FC<{ anime: any }> = ({ anime }) => {
-  const showDate = makeNiceDate(anime.startDate?.year || '', anime.endDate?.year || '')
+const AnimeCard: React.FC<{ anime: AnimeMedia }> = ({ anime }) => {
+  const showDate = makeNiceDate(anime?.startDate?.year?.toString() || '', anime?.endDate?.year?.toString() || '')
   const isPopular = (anime?.favourites || 0) > 5000
 
   // Theme colors
@@ -105,7 +105,7 @@ const AnimeCard: React.FC<{ anime: any }> = ({ anime }) => {
           >
             <Stack spacing={2}>
               <Text color="white" fontWeight="medium">{anime?.type}</Text>
-              {makeNiceRating(anime?.averageScore)}
+              {makeNiceRating(anime?.averageScore || 50)}
               <Text color="white" fontSize="sm">♥ {anime?.favourites?.toLocaleString()}</Text>
               <Text color="white" fontSize="sm" opacity={0.8}>{showDate}</Text>
             </Stack>
