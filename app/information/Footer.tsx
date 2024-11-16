@@ -13,7 +13,7 @@ export default function SmallWithNavigation() {
         spacing={4}
         justify={{ base: 'center', md: 'space-between' }}
         align={{ base: 'center', md: 'center' }}>
-        <Text>Donutello isn't a very clever joke.</Text>
+        <Text>I dunno, I just felt like I should make a footer.</Text>
       </Container>
     </Box>
   )
