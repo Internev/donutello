@@ -15,9 +15,9 @@ export default async function SettingsPage() {
     <Box minH="100vh" bg="gray.50">
       <Container maxW="container.md" h="100vh" py={8}>
         <SettingsForm
-          id={session.user.id}
-          username={session.user.username}
-          jobtitle={session.user.jobtitle}
+          id={session.user.id || ''}
+          username={session.user.username || ''}
+          jobtitle={session.user.jobtitle || ''}
         />
       </Container>
     </Box>
