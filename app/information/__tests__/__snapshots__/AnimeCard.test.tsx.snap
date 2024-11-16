@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnimeCard matches snapshot 1`] = `
+<div>
+  <div
+    class="chakra-card css-1bto0a9"
+  >
+    <div
+      class="chakra-card__body css-1e4fehn"
+      role="group"
+    >
+      <div
+        class="css-79elbk"
+      >
+        <img
+          alt="Test Anime Title"
+          class="chakra-image__placeholder css-y8l31t"
+          src="https://via.placeholder.com/250x320?text=Loading..."
+        />
+        <div
+          class="css-14ebbme"
+        >
+          <p
+            class="chakra-text css-mcpu91"
+          >
+            ⭐️
+          </p>
+        </div>
+        <div
+          class="css-yjux51"
+        >
+          <div
+            class="chakra-stack css-2xph3x"
+          >
+            <p
+              class="chakra-text css-14p6uhh"
+            >
+              TV
+            </p>
+            <p
+              class="chakra-text css-1ae45b4"
+            >
+              Rating: 
+              85
+              %
+            </p>
+            <p
+              class="chakra-text css-1aakaxo"
+            >
+              ♥ 
+              6,000
+            </p>
+            <p
+              class="chakra-text css-zx7ia"
+            >
+              2023 - 2024
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="chakra-stack css-wxtwm2"
+      >
+        <p
+          class="chakra-text css-n1oncg"
+        >
+          Test Anime Title
+        </p>
+      </div>
+    </div>
+  </div>
+  <span
+    hidden=""
+    id="__chakra_env"
+  />
+</div>
+`;
