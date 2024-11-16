@@ -1,6 +1,6 @@
 'use client'
 
-import { useGetAnimeQuery, GetAnimeQuery } from "@/graphql/generated/graphql"
+import { useGetAnimeQuery, GetAnimeQuery, useGetAnimeSuspenseQuery } from "@/graphql/generated/graphql"
 import {
   Box,
   Container,
@@ -88,7 +88,7 @@ const AnimeDetails: React.FC = () => {
     router.push('/information')
     return null
   }
-  const { data, loading } = useGetAnimeQuery({ variables: { id: Number(id) } })
+  const { data } = useGetAnimeSuspenseQuery({ variables: { id: Number(id) } })
 
   const sanitizeDescription = (description: string) => {
     return description.replace(/<[^>]*>?/gm, '')
