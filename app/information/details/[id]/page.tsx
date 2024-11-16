@@ -1,4 +1,4 @@
-import AnimeDetails from "@/app/anime/AnimeDetails"
+import AnimeDetails from "@/app/information/AnimeDetails"
 
 const AnimeDetailsPage = () => {
   return (

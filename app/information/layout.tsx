@@ -1,3 +1,6 @@
+import Footer from "./Footer"
+import Header from "./Header"
+
 export default function AnimeLayout({
   children,
   modal
@@ -7,8 +10,10 @@ export default function AnimeLayout({
 }) {
   return (
     <>
+      <Header />
       {children}
       {modal}
+      <Footer />
     </>
   )
 }

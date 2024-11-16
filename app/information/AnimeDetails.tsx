@@ -85,7 +85,7 @@ const AnimeDetails: React.FC = () => {
   if (!id || isNaN(Number(id))) {
     // I'd do something nicer in real life, like show a timed error message then redirect
     const router = useRouter()
-    router.push('/anime')
+    router.push('/information')
     return null
   }
   const { data, loading } = useGetAnimeQuery({ variables: { id: Number(id) } })
@@ -97,19 +97,12 @@ const AnimeDetails: React.FC = () => {
   const anime = data?.Media
   return (
     <Container maxW={'7xl'} py={6}>
-      {/* <SimpleGrid
-          columns={{ base: 1, lg: 2 }}
-          spacing={{ base: 8, md: 10 }}
-          py={{ base: 18, md: 24 }}> */}
       <Flex>
         <Image
           rounded={'md'}
-          alt={'product image'}
+          alt={`${anime?.title?.userPreferred} banner`}
           src={anime?.bannerImage || ''}
-          fit={'cover'}
-          align={'center'}
           w={'100%'}
-          h={{ base: '100%', sm: '400px', lg: '500px' }}
         />
       </Flex>
       <Stack spacing={{ base: 6, md: 10 }}>
@@ -152,7 +145,6 @@ const AnimeDetails: React.FC = () => {
           Add to favourites
         </Button>
       </Stack>
-      {/* </SimpleGrid> */}
     </Container>
   )
 }
