@@ -18,10 +18,10 @@ Visit https://donutello.vercel.app/ to see it running live.
 Honestly this might be a bit annoying because of the DB. Feel free to contact me for details for the DB, or you could make your own, the schema is:
 ```
 column_name data_type character_maximum_length is_nullable column_default
-id	        uuid	    null	                   NO	         uuid_generate_v4()
-username	  character varying	255	             NO	         null
-jobtitle	  text	    null	                   NO	         null
-favourites	jsonb	    null	                   YES	       null
+id          uuid      null                     NO          uuid_generate_v4()
+username    varchar   255                      NO          null
+jobtitle    text      null                     NO          null
+favourites  jsonb     null                     YES         null
 ```
 (yes, it annoys me that jobtitle is one compound word instead of kebab-case, not enough to change it now though 😅)
 
