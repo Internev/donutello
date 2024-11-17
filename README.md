@@ -9,20 +9,23 @@ Some notes:
 
 - You'll also see a few references to "Favourites" - my imagined user would be visiting the site to either keep note of anime they've watched, or assemble a list of things they wanted to watch. So my DB has a jsonb column for favourites, and I originally intended the details page to save the id of the anime into a Set I could then save/use in the UI. This seemed like overkill so I've left it as an exercise for your imagination, plus a few stubs here and there.
 
+## Active deploy
 
-## Getting Started
+Visit https://donutello.vercel.app/ to see it running live.
 
-First, run the development server:
+## Running it locally
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Honestly this might be a bit annoying because of the DB. Feel free to contact me for details for the DB, or you could make your own, the schema is:
 ```
+column_name data_type character_maximum_length is_nullable column_default
+id	        uuid	    null	                   NO	         uuid_generate_v4()
+username	  character varying	255	             NO	         null
+jobtitle	  text	    null	                   NO	         null
+favourites	jsonb	    null	                   YES	       null
+```
+(yes, it annoys me that jobtitle is one compound word instead of kebab-case, not enough to change it now though 😅)
+
+Then just install the bits: `npm i` and run the dev server: `npm run dev`
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
