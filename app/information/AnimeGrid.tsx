@@ -25,7 +25,7 @@ import { SimpleGrid, Container } from '@chakra-ui/react'
  * - Handles page-based data fetching using URL search params
  */
 
-const AnimeGrid = () => {
+const AnimeGrid = ({ testGroup }: { testGroup: 'A' | 'B' }) => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const page = searchParams.get('page')
@@ -38,8 +38,19 @@ const AnimeGrid = () => {
     variables: { offset: currentPage - 1 },
   })
 
-  const animeList = data?.Page?.media
+  const handleAnimeClick = (animeId: number, testGroup: 'A' | 'B') => {
+    // In real implementation, send to analytics service
+    // with more detailed information
+    console.log('Card click:', {
+      animeId,
+      testGroup,
+      timestamp: new Date().toISOString(),
+      event: 'card_click',
+      page: currentPage
+    })
+  }
 
+  const animeList = data?.Page?.media
   return (
     <Container
       maxW="7xl"
@@ -56,8 +67,9 @@ const AnimeGrid = () => {
             href={`/information/details/${anime?.id}`}
             key={anime?.id}
             style={{ width: '100%' }}
+            onClick={() => handleAnimeClick(anime?.id || -1, testGroup)}
           >
-            <AnimeCard anime={anime} />
+            <AnimeCard anime={anime} testGroup={testGroup} />
           </Link>
         ))}
       </SimpleGrid>

@@ -6,6 +6,7 @@ import AnimeGridFallback from './AnimeGridFallback'
 import AnimePagination from "./AnimePagination"
 
 import type { Metadata } from 'next'
+import { auth } from "@/auth"
 
 export const metadata: Metadata = {
   title: "Discover Anime | Donutello",
@@ -24,7 +25,18 @@ export const metadata: Metadata = {
   }
 }
 
-const Information = () => {
+// Simple function to get roughly 50/50 test group based on user ID
+const getTestGroup = (userId: string) => {
+  // Take first 4 chars of userId and sum their char codes
+  const sum = userId.slice(0, 4).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+  // This will give us a pretty even 50/50 split
+  return sum % 2 === 0 ? 'A' : 'B'
+}
+
+const Information = async () => {
+  const session = await auth()
+  const userId = session?.user?.id || null
+  const testGroup = userId ? getTestGroup(userId) : 'A'
 
   return (
     <Container maxW={'6xl'}>
@@ -36,7 +48,7 @@ const Information = () => {
 
         {/* Grid of anime cards */}
         <Suspense fallback={<AnimeGridFallback />}>
-          <AnimeGrid />
+          <AnimeGrid testGroup={testGroup} />
         </Suspense>
       </VStack>
     </Container>
