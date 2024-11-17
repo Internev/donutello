@@ -1,6 +1,5 @@
 import { GetAnimeListQuery } from "@/graphql/generated/graphql"
-import { Card, CardBody, Image, Stack, Text, Box, Tooltip, useColorModeValue } from "@chakra-ui/react"
-import { useState, useEffect } from "react"
+import { Card, CardBody, Image, Stack, Text, Box, Tooltip } from "@chakra-ui/react"
 
 /**
  * Card component displaying summary information for an anime entry.
@@ -24,7 +23,7 @@ import { useState, useEffect } from "react"
  * - Responsive image handling with fallback support
  */
 
-type AnimeMedia = NonNullable<NonNullable<GetAnimeListQuery['Page']>['media']>[number]
+export type AnimeMedia = NonNullable<NonNullable<GetAnimeListQuery['Page']>['media']>[number]
 
 const makeNiceDate = (startYear: string, endYear: string) => {
   if (startYear === endYear) {

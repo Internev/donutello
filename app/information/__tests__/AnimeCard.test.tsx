@@ -31,22 +31,22 @@ const mockAnimeUnpopular = {
 
 describe('AnimeCard', () => {
   it('renders anime card with correct title', () => {
-    render(<AnimeCard anime={mockAnime} />)
+    render(<AnimeCard testGroup={'A'} anime={mockAnime} />)
     expect(screen.getByText('Test Anime Title')).toBeInTheDocument()
   })
 
   it('renders popular anime with star icon', () => {
-    render(<AnimeCard anime={mockAnime} />)
+    render(<AnimeCard testGroup={'A'} anime={mockAnime} />)
     expect(screen.getByText('⭐️')).toBeInTheDocument()
   })
 
   it('does not render star icon for unpopular anime', () => {
-    render(<AnimeCard anime={mockAnimeUnpopular} />)
+    render(<AnimeCard testGroup={'A'} anime={mockAnimeUnpopular} />)
     expect(screen.queryByText('⭐️')).not.toBeInTheDocument()
   })
 
   it('shows additional information on hover', async () => {
-    render(<AnimeCard anime={mockAnime} />)
+    render(<AnimeCard testGroup={'A'} anime={mockAnime} />)
 
     // Find the card body and hover over it
     const cardBody = screen.getByRole('group')
@@ -65,13 +65,13 @@ describe('AnimeCard', () => {
       startDate: { year: '2023' },
       endDate: { year: '2023' }
     } as unknown as AnimeMedia
-    render(<AnimeCard anime={sameYearAnime} />)
+    render(<AnimeCard testGroup={'A'} anime={sameYearAnime} />)
     expect(screen.getByText('2023')).toBeInTheDocument()
   })
 
   // Snapshot test
   it('matches snapshot', () => {
-    const { container } = render(<AnimeCard anime={mockAnime} />)
+    const { container } = render(<AnimeCard testGroup={'A'} anime={mockAnime} />)
     expect(container).toMatchSnapshot()
   })
 })
