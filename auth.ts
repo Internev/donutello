@@ -31,7 +31,6 @@ export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [Credentials({
     async authorize(credentials) {
-      console.log('authorize credentials:', credentials)
       const parsedCredentials = z
         .object({ username: z.string().min(1), jobtitle: z.string().min(1) })
         .safeParse(credentials)
@@ -46,7 +45,6 @@ export const { auth, signIn, signOut } = NextAuth({
           jobtitle: user.jobtitle,
         }
       }
-      console.log('Credential validation failed')
       return null
     },
   })]

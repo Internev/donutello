@@ -20,7 +20,6 @@ export async function authenticate(prevState: string | undefined, formData: Form
       jobtitle: formData.get('jobtitle'),
     })
 
-    console.log('validated fields:', validatedFields)
     if (!validatedFields.success) {
       return 'Invalid fields. Please check your input.'
     }
