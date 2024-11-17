@@ -2,10 +2,11 @@
 import { render, screen } from '../../lib/test-utils'
 import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
-import AnimeCard from '../AnimeCard'
+import AnimeCard, { AnimeMedia } from '../AnimeCard'
 
 // Mock data
 const mockAnime = {
+  id: 1,
   title: {
     userPreferred: 'Test Anime Title'
   },
@@ -18,15 +19,15 @@ const mockAnime = {
   endDate: {
     year: '2024'
   },
-  type: 'TV',
+  type: 'Anime',
   averageScore: 85,
   favourites: 6000
-}
+} as unknown as AnimeMedia
 
 const mockAnimeUnpopular = {
   ...mockAnime,
   favourites: 1000
-}
+} as unknown as AnimeMedia
 
 describe('AnimeCard', () => {
   it('renders anime card with correct title', () => {
@@ -63,7 +64,7 @@ describe('AnimeCard', () => {
       ...mockAnime,
       startDate: { year: '2023' },
       endDate: { year: '2023' }
-    }
+    } as unknown as AnimeMedia
     render(<AnimeCard anime={sameYearAnime} />)
     expect(screen.getByText('2023')).toBeInTheDocument()
   })

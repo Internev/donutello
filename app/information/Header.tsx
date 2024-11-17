@@ -19,7 +19,7 @@ import { handleSignOut } from '@/app/lib/actions'
 import { Session } from 'next-auth'
 
 interface HeaderProps {
-  session: Session
+  session: Session | null
 }
 
 const Header = ({ session }: HeaderProps) => {

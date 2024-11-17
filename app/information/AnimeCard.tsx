@@ -1,7 +1,7 @@
 import { GetAnimeListQuery } from "@/graphql/generated/graphql"
 import { Card, CardBody, Image, Stack, Text, Box, Tooltip, useColorModeValue } from "@chakra-ui/react"
 
-type AnimeMedia = NonNullable<NonNullable<GetAnimeListQuery['Page']>['media']>[number]
+export type AnimeMedia = NonNullable<NonNullable<GetAnimeListQuery['Page']>['media']>[number]
 
 /**
  * Card component displaying summary information for an anime entry.
