@@ -27,12 +27,14 @@ export async function authenticate(prevState: string | undefined, formData: Form
 
     const { username, jobtitle } = validatedFields.data
 
-    await signIn('credentials', {
+    const result = await signIn('credentials', {
       username,
       jobtitle,
+      redirect: false,
     })
-
-    return undefined
+    if (!result?.error) {
+      redirect('/information?page=1')
+    }
   } catch (error) {
     if (error instanceof AuthError) {
       return 'Authentication failed.'
